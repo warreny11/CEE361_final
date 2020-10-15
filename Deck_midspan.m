@@ -4,7 +4,7 @@
 % Date : 10/12 - 
 
 % number of decks
-nod = 1;
+nod = 2;
 
 % 0. Convergence inputs
 neR = 4;   % number of elements along y-axis
@@ -21,7 +21,17 @@ q = -90; Pe = q*(L/neY/2)*(2*W*sin(1*pi/9/neR));
 % where W is the width of the structure [m]
 
 % 2. Nodal & 3. Element definitions
-[xn,ien] = genMeshDeck(W,L,neR,neY);
+if nod == 1
+    [xn,ien] = genMeshDeck(W,L,neR,neY);
+end
+
+if nod == 2
+    [xn,ien] = genMeshDeck(W,L,neR,neY);
+    [xn2,ien2] = genMeshDeck(-W,L,neR,neY);
+    xn = [xn;xn2];
+    ien = [ien;ien2+max(max(ien))];
+end
+
 nnp = size(xn,1);   % number of nodal points
 nel = size(ien,1);  % number of elements
 idb = zeros(nnp,ndf);	% index of dofs - supported
